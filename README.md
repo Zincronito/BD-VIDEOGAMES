@@ -1,0 +1,1 @@
+proyecto basado en servicios de mysql, phpmyadmin, fastapi, trabajando con los 3 servicios enlazados y levantados mediante docker para el manejo de contenedores, como producto obtenemos consultas incluidas en la interfaz web de fastapi que ademas genera tablas y graficas para visualizar los datos con mayor claridad.

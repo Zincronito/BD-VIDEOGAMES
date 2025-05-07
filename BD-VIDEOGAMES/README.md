@@ -79,7 +79,7 @@ Docker: Gestión de entornos de desarrollo
 
 Visualización: Transformación de datos en insights
 
-Próximos Pasos
+Próximos Pasos: 
 Añadir autenticación de usuarios
 
 Implementar caché para consultas frecuentes

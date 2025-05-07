@@ -1,0 +1,41 @@
+services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - 3311:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - /mysql_data:/var/lib/mysql
+      - ./database_game:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 8082:80
+    environment:  
+      - PMA_HOST=mysql
+    depends_on: 
+      - mysql 
+  api:
+    build: ./app
+    restart: unless-stopped
+    volumes:
+      - ./app/data:/app/data
+    env_file:
+      - ./.env
+    depends_on:
+      mysql:
+        condition: service_healthy 
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    command: uvicorn main:app --host ${API_HOST} --port ${API_PORT}
